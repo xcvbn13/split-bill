@@ -32,6 +32,7 @@ One user (the creator) pays first, then each member must reimburse their share b
 Below is a placeholder screenshot section for your deployed testnet contract view:
 
 ![Testnet Contract Screenshot](screenshot.png)
+![Testnet Contract Screenshot2](screenshot2.png)
 
 ## Running Tests
 
