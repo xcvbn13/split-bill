@@ -34,12 +34,54 @@ Below is a placeholder screenshot section for your deployed testnet contract vie
 ![Testnet Contract Screenshot](screenshot.png)
 ![Testnet Contract Screenshot2](screenshot2.png)
 
+## Setup
+
+### Prerequisites
+
+- Rust (stable)
+- Cargo
+- Stellar CLI (`stellar`)
+
+### Install Dependencies
+
+```bash
+cargo --version
+stellar --version
+```
+
+### Build Contract
+
+```bash
+cd contracts/notes
+stellar contract build
+```
+
 ## Running Tests
 
 ```bash
 cd contracts/notes
 cargo test
 ```
+
+## Usage
+
+Typical flow when interacting with this smart contract:
+
+1. Call `create_bill(...)` as the creator and store the returned `bill_id`.
+2. Each member checks how much they owe by calling `get_member_due(bill_id, member)`.
+3. Each member pays through `pay_share(bill_id, member)`.
+4. Track progress with `get_bill(bill_id)`.
+5. Once all members are paid, settlement to the creator happens automatically.
+
+## Explanation
+
+This contract implements a split-bill escrow mechanism:
+
+- The contract stores each bill using a unique `bill_id` (`DataKey::Bill(bill_id)`), allowing multiple active bills.
+- During payment, the contract verifies the member and computes the due amount.
+- If payment is after the bill deadline, a penalty is added automatically.
+- Funds are transferred from member to contract escrow first.
+- When all members are marked paid, the contract transfers the full collected amount to the bill creator and marks the bill as settled.
 
 Current test coverage includes:
 
